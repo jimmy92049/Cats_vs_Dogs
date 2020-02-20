@@ -1,0 +1,5 @@
+
+
+sudo pip install Pillow
+sudo pip install Scipy
+sudo pip3 install tensorflow-gpu

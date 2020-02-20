@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+   name: tensorflow-test-pod
+   labels:
+     app: demoApp
+spec:
+   volumes:
+     - name: test-volume
+       hostPath:
+         path: /home/jimmy/Cats_vs_Dogs
+         type: Directory 
+   containers:
+     - name: tensorflow-demo-container
+       image: nvcr.io/nvidia/tensorflow:19.10-py3 
+       command: ["/bin/sh", "-c"]
+       args: 
+         - echo starting;
+           cd /tmp/;
+           python3 train_resnet50-5e.py
+           echo done;
+       ports:
+         - containerPort: 80
+       volumeMounts:
+         - mountPath: /tmp
+           name: test-volume
+       resources:
+          limits:
+            nvidia.com/gpu: 1
+   restartPolicy: Never
+   nodeSelector:
+       gpushare: "true"
